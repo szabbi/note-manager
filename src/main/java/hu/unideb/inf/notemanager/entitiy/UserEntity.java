@@ -28,4 +28,6 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "felhasznalo")
     private List<NoteEntity> note;
+
+
 }
