@@ -8,33 +8,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello maki!";
-    }
-
-    @PostMapping("/saveuser")
+    @PostMapping("/add")
     public UserDto addUser(@RequestBody UserDto user) {
         return userService.addUser(user);
     }
 
-    @GetMapping("/getuserbyid")
+    @GetMapping("/getbyid")
     public UserDto getUserById(@RequestParam Long id) {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/getusers")
+    @GetMapping("/getall")
     public List<UserDto> getAllUser() {
         return userService.getAllUser();
     }
 
-    @PutMapping("/updateuser")
+    @PutMapping("/update")
     public UserDto updateUser(@RequestBody UserDto user) {
         if (user.getId() > 0L) {
             return userService.addUser(user);
@@ -42,7 +37,7 @@ public class UserController {
         return null;
     }
 
-    @DeleteMapping("/deleteuser")
+    @DeleteMapping("/delete")
     public void deleteUser(@RequestParam Long id) {
         userService.deleteUser(id);
     }
