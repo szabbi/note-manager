@@ -29,6 +29,11 @@ public class UserController {
         return userService.getAllUser();
     }
 
+    @GetMapping
+    public List<UserDto> getUsers() {
+        return userService.getAllUser();
+    }
+
     @PutMapping("/update")
     public UserDto updateUser(@RequestBody UserDto user) {
         if (user.getId() > 0L) {
@@ -41,5 +46,7 @@ public class UserController {
     public void deleteUser(@RequestParam Long id) {
         userService.deleteUser(id);
     }
+
+
 }
 
