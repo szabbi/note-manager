@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { listUsers } from "../services/UserService";
+import { getAllUser } from "../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 const ListUserCompontent = () => {
 	const [users, setUsers] = useState([]);
+	const navigator = useNavigate();
+
 	useEffect(() => {
-		listUsers()
+		getAllUser()
 			.then((response) => {
 				setUsers(response.data);
 			})
@@ -12,9 +15,16 @@ const ListUserCompontent = () => {
 				console.log(error);
 			});
 	}, []);
+
+	function addUser() {
+		navigator("/add-user");
+	}
 	return (
 		<div className="container">
 			<h1>List of users</h1>
+			<button type="button" className="btn btn-primary" onClick={addUser}>
+				Add
+			</button>
 			<table className="table table-striped table-bordered">
 				<thead>
 					<tr>

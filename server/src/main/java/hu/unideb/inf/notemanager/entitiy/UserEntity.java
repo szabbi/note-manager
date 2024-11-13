@@ -1,14 +1,17 @@
 package hu.unideb.inf.notemanager.entitiy;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -22,7 +25,7 @@ public class UserEntity {
     @Column(name = "user_password")
     private String password;
 
-    @OneToMany(mappedBy = "felhasznalo")
+    @OneToMany(mappedBy = "felhasznalo", fetch = FetchType.EAGER)
     private List<NoteEntity> note;
 
     public UserEntity(long id, String name, String email, String password, List<NoteEntity> note) {
@@ -60,8 +63,18 @@ public class UserEntity {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     public void setPassword(String password) {
