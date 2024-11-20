@@ -1,9 +1,7 @@
 package hu.unideb.inf.notemanager.mapper;
 
 import hu.unideb.inf.notemanager.dto.NoteDto;
-import hu.unideb.inf.notemanager.dto.UserDto;
 import hu.unideb.inf.notemanager.entitiy.NoteEntity;
-import hu.unideb.inf.notemanager.entitiy.UserEntity;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -12,14 +10,14 @@ import java.util.stream.Collectors;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface NoteEntityMapper {
     NoteEntity toEntity(NoteDto noteDto);
-    @Mapping(target = "userName", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     NoteDto toDto(NoteEntity noteEntity);
     List<NoteDto> toDtoList(List<NoteEntity> entities);
 
     @Named("toDtoWithUsername")
     default NoteDto toDtoWithUsername(NoteEntity noteEntity) {
         NoteDto noteDto = toDto(noteEntity);
-        noteDto.setUserName(noteEntity.getFelhasznalo().getName());
+        noteDto.setCreatedBy(noteEntity.getFelhasznalo().getName());
 
         return noteDto;
     }

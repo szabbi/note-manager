@@ -1,7 +1,6 @@
 package hu.unideb.inf.notemanager.service;
 
 import hu.unideb.inf.notemanager.dto.NoteDto;
-import hu.unideb.inf.notemanager.entitiy.UserEntity;
 import hu.unideb.inf.notemanager.entitiy.NoteEntity;
 import hu.unideb.inf.notemanager.mapper.NoteEntityMapper;
 import hu.unideb.inf.notemanager.repository.NoteRepository;
@@ -34,7 +33,7 @@ public class NoteServiceImpl implements NoteService {
         String user = authentication.getName();
 
         noteEntity.setFelhasznalo(userRepository.findByEmail(user));
-        noteEntity.setCreated(LocalDateTime.now());
+        noteEntity.setCreatedAt(LocalDateTime.now());
         noteEntity = noteRepository.save(noteEntity);
 
         NoteDto dto = new NoteDto();
@@ -51,7 +50,7 @@ public class NoteServiceImpl implements NoteService {
         dto.setId(entity.getId());
         dto.setTitle(entity.getTitle());
         dto.setContent(entity.getContent());
-        dto.setCreated(entity.getCreated());
+        dto.setCreatedAt(entity.getCreatedAt());
 
         return dto;
     }

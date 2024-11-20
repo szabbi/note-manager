@@ -1,9 +1,11 @@
 package hu.unideb.inf.notemanager.entitiy;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -15,23 +17,29 @@ public class NoteEntity {
     private long id;
 
     @Column(name = "note_title")
+    @NotBlank(message = "Title can't be empty")
+    @Size(min = 5, max = 50, message = "Title must be between 5 and 50 characters")
     private String title;
 
     @Column(name = "note_content")
+    @NotBlank(message = "Content can't be empty")
+    @Size(min = 5, max = 500, message = "Content must be between 5 and 500 characters")
     private String content;
 
     @Column(name = "created_at")
-    private LocalDateTime created;
+    @NotBlank(message = "Creation date can't be empty")
+    @FutureOrPresent(message = "Date must be in the present or future")
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity felhasznalo;
 
-    public NoteEntity(long id, String title, String content, LocalDateTime created, UserEntity felhasznalo) {
+    public NoteEntity(long id, String title, String content, LocalDateTime createdAt, UserEntity felhasznalo) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.created = created;
+        this.createdAt = createdAt;
         this.felhasznalo = felhasznalo;
     }
 
@@ -67,12 +75,12 @@ public class NoteEntity {
         this.content = content;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
+    public void setCreatedAt(LocalDateTime created) {
+        this.createdAt = created;
     }
 
     public UserEntity getFelhasznalo() {
@@ -88,12 +96,12 @@ public class NoteEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NoteEntity that = (NoteEntity) o;
-        return id == that.id && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(created, that.created) && Objects.equals(felhasznalo, that.felhasznalo);
+        return id == that.id && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(createdAt, that.createdAt) && Objects.equals(felhasznalo, that.felhasznalo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, content, created, felhasznalo);
+        return Objects.hash(id, title, content, createdAt, felhasznalo);
     }
 
     @Override
@@ -102,7 +110,7 @@ public class NoteEntity {
                 .add("id=" + id)
                 .add("title='" + title + "'")
                 .add("content='" + content + "'")
-                .add("created=" + created)
+                .add("created=" + createdAt)
                 .add("felhasznalo=" + felhasznalo)
                 .toString();
     }

@@ -1,7 +1,10 @@
 package hu.unideb.inf.notemanager.config;
 
+import hu.unideb.inf.notemanager.entitiy.UserEntity;
+import hu.unideb.inf.notemanager.repository.UserRepository;
 import hu.unideb.inf.notemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.ALWAYS;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -58,5 +60,15 @@ public class SecurityConfig{
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration conf) throws Exception {
         return conf.getAuthenticationManager();
+    }
+
+    @Bean
+    public CommandLineRunner loadData(UserRepository userRepository) {
+        return args -> {
+            UserEntity user1 = new UserEntity("John", "asd@asd.com", passwordEncoder().encode("asd"));
+            UserEntity user2 = new UserEntity("Peter", "asd2@asd.com", passwordEncoder().encode("asd"));
+            userRepository.save(user1);
+            userRepository.save(user2);
+        };
     }
 }

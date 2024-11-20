@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     @Autowired
     PasswordEncoder passwordEncoder;

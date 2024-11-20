@@ -1,5 +1,7 @@
 package hu.unideb.inf.notemanager.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -8,15 +10,16 @@ public class NoteDto {
     private long id;
     private String title;
     private String content;
-    private LocalDateTime created;
-    private String userName;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime createdAt;
+    private String createdBy;
 
-    public NoteDto(long id, String title, String content, LocalDateTime created, String userName) {
+    public NoteDto(long id, String title, String content, LocalDateTime createdAt, String createdBy) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.created = created;
-        this.userName = userName;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
     }
 
     public NoteDto() {
@@ -46,20 +49,20 @@ public class NoteDto {
         this.content = content;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override
@@ -67,12 +70,12 @@ public class NoteDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NoteDto noteDto = (NoteDto) o;
-        return id == noteDto.id && Objects.equals(title, noteDto.title) && Objects.equals(content, noteDto.content) && Objects.equals(created, noteDto.created);
+        return id == noteDto.id && Objects.equals(title, noteDto.title) && Objects.equals(content, noteDto.content) && Objects.equals(createdAt, noteDto.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, content, created);
+        return Objects.hash(id, title, content, createdAt);
     }
 
     @Override
@@ -81,7 +84,7 @@ public class NoteDto {
                 .add("id=" + id)
                 .add("title='" + title + "'")
                 .add("content='" + content + "'")
-                .add("created=" + created)
+                .add("created=" + createdAt)
                 .toString();
     }
 }
