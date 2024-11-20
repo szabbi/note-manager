@@ -2,7 +2,6 @@ package hu.unideb.inf.notemanager.controller;
 
 import hu.unideb.inf.notemanager.dto.LoginDto;
 import hu.unideb.inf.notemanager.dto.RegistrationDto;
-import hu.unideb.inf.notemanager.dto.UserDto;
 import hu.unideb.inf.notemanager.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

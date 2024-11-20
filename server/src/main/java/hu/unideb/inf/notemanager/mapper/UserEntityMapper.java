@@ -14,9 +14,4 @@ public interface UserEntityMapper {
     List<UserDto> toDtoList(List<UserEntity> entities);
 
     UserEntity toEntityReg(RegistrationDto registrationDto);
-    RegistrationDto toDtoReg(UserEntity userEntity);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    UserEntity partialUpdate(UserDto userDto, @MappingTarget UserEntity userEntity);
-
 }

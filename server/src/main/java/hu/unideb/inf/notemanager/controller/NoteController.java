@@ -3,6 +3,8 @@ package hu.unideb.inf.notemanager.controller;
 import hu.unideb.inf.notemanager.dto.NoteDto;
 import hu.unideb.inf.notemanager.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

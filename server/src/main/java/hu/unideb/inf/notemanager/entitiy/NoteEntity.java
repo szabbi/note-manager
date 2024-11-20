@@ -1,6 +1,8 @@
 package hu.unideb.inf.notemanager.entitiy;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -19,18 +21,23 @@ public class NoteEntity {
     private String content;
 
     @Column(name = "created_at")
-    private Date created;
+    private LocalDateTime created;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity felhasznalo;
 
-    public NoteEntity(long id, String title, String content, Date created, UserEntity felhasznalo) {
+    public NoteEntity(long id, String title, String content, LocalDateTime created, UserEntity felhasznalo) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.created = created;
         this.felhasznalo = felhasznalo;
+    }
+
+    public NoteEntity(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
     public NoteEntity() {
@@ -60,11 +67,11 @@ public class NoteEntity {
         this.content = content;
     }
 
-    public Date getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
