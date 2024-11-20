@@ -1,6 +1,9 @@
 package hu.unideb.inf.notemanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -11,6 +14,8 @@ public class NoteDto {
     private String title;
     private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @NotBlank(message = "Creation date can't be empty")
+    @FutureOrPresent(message = "Date must be in the present or future")
     private LocalDateTime createdAt;
     private String createdBy;
 

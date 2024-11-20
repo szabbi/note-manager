@@ -3,10 +3,13 @@ package hu.unideb.inf.notemanager.service;
 import hu.unideb.inf.notemanager.dto.LoginDto;
 import hu.unideb.inf.notemanager.dto.RegistrationDto;
 import hu.unideb.inf.notemanager.entitiy.UserEntity;
+import hu.unideb.inf.notemanager.exception.InvalidCredentialsException;
+import hu.unideb.inf.notemanager.exception.UserAlreadyExistsException;
 import hu.unideb.inf.notemanager.mapper.UserEntityMapper;
 import hu.unideb.inf.notemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,22 +34,33 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registration(RegistrationDto dto) {
-        UserEntity entity = userEntityMapper.toEntityReg(dto);
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-
-        userRepository.save(entity);
+        try {
+            if (userRepository.existsByEmail(dto.getEmail())) {
+                throw new UserAlreadyExistsException("A user already exists with this email.");
+            }
+            UserEntity entity = userEntityMapper.toEntityReg(dto);
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            userRepository.save(entity);
+        } catch (Exception e){
+            throw new RuntimeException("An error occurred: " + e);
+        };
     }
 
     @Override
     public void login(LoginDto dto) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        dto.getEmail(),
-                        dto.getPassword()
-                )
-        );
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(auth);
-        SecurityContextHolder.setContext(context);
+        try{
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            dto.getEmail(),
+                            dto.getPassword()
+                    )
+            );
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(auth);
+            SecurityContextHolder.setContext(context);
+        } catch (InternalAuthenticationServiceException e) {
+            throw new InvalidCredentialsException("Invalid username or password");
+        }
+
     }
 }

@@ -2,9 +2,6 @@ package hu.unideb.inf.notemanager.entitiy;
 
 import jakarta.persistence.*;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,18 +18,12 @@ public class UserEntity implements UserDetails{
     private long id;
 
     @Column(name = "user_name")
-    @NotBlank(message = "Username can't be empty")
-    @Size(min = 5, max = 15, message = "Username must be between 5 and 15 characters")
     private String name;
 
     @Column(name = "user_email", unique = true)
-    @NotBlank(message = "Email can't be empty")
-    @Email(message = "Email must be valid")
     private String email;
 
     @Column(name = "user_password")
-    @NotBlank(message = "Password can't be empty")
-    @Size(min = 5, max = 30, message = "Password must be between 5 and 30 characters")
     private String password;
 
     @OneToMany(mappedBy = "felhasznalo", fetch = FetchType.EAGER)

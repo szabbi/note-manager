@@ -65,10 +65,8 @@ public class SecurityConfig{
     @Bean
     public CommandLineRunner loadData(UserRepository userRepository) {
         return args -> {
-            UserEntity user1 = new UserEntity("John", "asd@asd.com", passwordEncoder().encode("asd"));
-            UserEntity user2 = new UserEntity("Peter", "asd2@asd.com", passwordEncoder().encode("asd"));
+            UserEntity user1 = new UserEntity("Johnny", "john@example.com", passwordEncoder().encode("asd123"));
             userRepository.save(user1);
-            userRepository.save(user2);
         };
     }
 }

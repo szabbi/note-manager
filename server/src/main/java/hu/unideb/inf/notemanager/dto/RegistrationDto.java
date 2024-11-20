@@ -1,10 +1,23 @@
 package hu.unideb.inf.notemanager.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 public class RegistrationDto {
+
+    @NotBlank(message = "Username can't be empty")
+    @Size(min = 5, max = 15, message = "Username must be between 5 and 15 characters")
     private String name;
+
+    @NotBlank(message = "Email can't be empty")
+    @Email(message = "Email must be valid")
     private String email;
+
+    @NotBlank(message = "Password can't be empty")
+    @Size(min = 5, max = 30, message = "Password must be between 5 and 30 characters")
     private String password;
 
     public RegistrationDto() {

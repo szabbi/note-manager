@@ -5,7 +5,10 @@ import hu.unideb.inf.notemanager.entitiy.NoteEntity;
 import hu.unideb.inf.notemanager.mapper.NoteEntityMapper;
 import hu.unideb.inf.notemanager.repository.NoteRepository;
 import hu.unideb.inf.notemanager.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,6 +54,7 @@ public class NoteServiceImpl implements NoteService {
         dto.setTitle(entity.getTitle());
         dto.setContent(entity.getContent());
         dto.setCreatedAt(entity.getCreatedAt());
+        dto.setCreatedBy(entity.getFelhasznalo().getName());
 
         return dto;
     }
@@ -66,6 +70,9 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void deleteNote(Long id) {
+        if (!noteRepository.existsById(id)) {
+            throw new EntityNotFoundException("Note with ID " + id + " does not exist.");
+        }
         noteRepository.deleteById(id);
     }
 }

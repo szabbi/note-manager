@@ -1,5 +1,8 @@
 package hu.unideb.inf.notemanager.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 import java.util.StringJoiner;
 

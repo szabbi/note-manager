@@ -1,6 +1,7 @@
 package hu.unideb.inf.notemanager.entitiy;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,8 +28,6 @@ public class NoteEntity {
     private String content;
 
     @Column(name = "created_at")
-    @NotBlank(message = "Creation date can't be empty")
-    @FutureOrPresent(message = "Date must be in the present or future")
     private LocalDateTime createdAt;
 
     @ManyToOne
