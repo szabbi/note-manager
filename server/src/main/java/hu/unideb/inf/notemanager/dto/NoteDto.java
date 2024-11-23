@@ -1,9 +1,9 @@
 package hu.unideb.inf.notemanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -18,13 +18,15 @@ public class NoteDto {
     @FutureOrPresent(message = "Date must be in the present or future")
     private LocalDateTime createdAt;
     private String createdBy;
+    private Boolean publicNote;
 
-    public NoteDto(long id, String title, String content, LocalDateTime createdAt, String createdBy) {
+    public NoteDto(long id, String title, String content, LocalDateTime createdAt, String createdBy, boolean publicNote) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
+        this.publicNote = publicNote;
     }
 
     public NoteDto() {
@@ -68,6 +70,14 @@ public class NoteDto {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public boolean getPublicNote() {
+        return publicNote;
+    }
+
+    public void setPublicNote(boolean publicNote) {
+        this.publicNote = publicNote;
     }
 
     @Override

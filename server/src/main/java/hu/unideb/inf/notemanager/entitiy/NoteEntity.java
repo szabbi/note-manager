@@ -1,9 +1,9 @@
 package hu.unideb.inf.notemanager.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -34,17 +34,23 @@ public class NoteEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity felhasznalo;
 
-    public NoteEntity(long id, String title, String content, LocalDateTime createdAt, UserEntity felhasznalo) {
+    @Column(name = "is_public", nullable = false)
+    @NotNull(message = "It's required to set the note either public or not.")
+    private Boolean publicNote;
+
+    public NoteEntity(long id, String title, String content, LocalDateTime createdAt, UserEntity felhasznalo, boolean publicNote) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.felhasznalo = felhasznalo;
+        this.publicNote = publicNote;
     }
 
-    public NoteEntity(String title, String content) {
+    public NoteEntity(String title, String content, boolean publicNote) {
         this.title = title;
         this.content = content;
+        this.publicNote = publicNote;
     }
 
     public NoteEntity() {
@@ -88,6 +94,14 @@ public class NoteEntity {
 
     public void setFelhasznalo(UserEntity felhasznalo) {
         this.felhasznalo = felhasznalo;
+    }
+
+    public boolean getPublicNote() {
+        return publicNote;
+    }
+
+    public void setPublicNote(boolean publicNote) {
+        this.publicNote = publicNote;
     }
 
     @Override

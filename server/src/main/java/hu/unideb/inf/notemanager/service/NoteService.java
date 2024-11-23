@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface NoteService {
     NoteDto addNote(NoteDto note);
-    NoteDto getNoteById(Long id);
-    List<NoteDto> getNotes();
+    List<NoteDto> getNotesByUser();
+    List<NoteDto> getPublicNotes();
     void deleteNote(Long id);
 }

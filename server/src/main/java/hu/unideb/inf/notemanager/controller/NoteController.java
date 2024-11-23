@@ -17,17 +17,18 @@ public class NoteController {
 
     @PostMapping("/add")
     public NoteDto addNote(@RequestBody NoteDto note){
+        System.out.println(note.getPublicNote());
         return noteService.addNote(note);
     }
 
-    @GetMapping("/getbyid")
-    public NoteDto getNoteById(@RequestParam Long id) {
-        return noteService.getNoteById(id);
+    @GetMapping("/getbyuser")
+    public List<NoteDto> getNotesByUser() {
+        return noteService.getNotesByUser();
     }
 
-    @GetMapping("/getall")
-    public List<NoteDto> getAllNote() {
-        return noteService.getNotes();
+    @GetMapping("/getpublicnotes")
+    public List<NoteDto> getPublicNotes() {
+        return noteService.getPublicNotes();
     }
 
     @PutMapping("/update")

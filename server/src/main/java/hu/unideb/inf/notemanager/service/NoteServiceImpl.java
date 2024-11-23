@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -32,9 +33,9 @@ public class NoteServiceImpl implements NoteService {
     public NoteDto addNote(NoteDto note) {
         NoteEntity noteEntity = noteEntityMapper.toEntity(note);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String user = authentication.getName();
+        String user =  SecurityContextHolder.getContext().getAuthentication().getName();
 
+        System.out.println(noteEntity.getPublicNote() + " after mapping");
         noteEntity.setFelhasznalo(userRepository.findByEmail(user));
         noteEntity.setCreatedAt(LocalDateTime.now());
         noteEntity = noteRepository.save(noteEntity);
@@ -46,22 +47,16 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDto getNoteById(Long id) {
-        NoteEntity entity = noteRepository.getReferenceById(id);
-        NoteDto dto = new NoteDto();
+    public List<NoteDto> getNotesByUser() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<NoteEntity> entities = noteRepository.findAllByFelhasznaloEmail(userEmail);
 
-        dto.setId(entity.getId());
-        dto.setTitle(entity.getTitle());
-        dto.setContent(entity.getContent());
-        dto.setCreatedAt(entity.getCreatedAt());
-        dto.setCreatedBy(entity.getFelhasznalo().getName());
-
-        return dto;
+        return noteEntityMapper.toDtoListWithUsername(entities);
     }
 
     @Override
-    public List<NoteDto> getNotes() {
-        List<NoteEntity> entites = noteRepository.findAll();
+    public List<NoteDto> getPublicNotes() {
+        List<NoteEntity> entites = noteRepository.findAllByPublicNoteTrue();
         List<NoteDto> dtos = new ArrayList<>();
 
         dtos = noteEntityMapper.toDtoListWithUsername(entites);
