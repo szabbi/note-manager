@@ -33,6 +33,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     UserEntityMapper userEntityMapper;
 
+    @Autowired
+    JwtService jwtService;
+
     @Override
     public void registration(RegistrationDto dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
@@ -44,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void login(LoginDto dto) {
+    public String login(LoginDto dto) {
         try{
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -52,9 +55,10 @@ public class AuthServiceImpl implements AuthService {
                             dto.getPassword()
                     )
             );
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(auth);
-            SecurityContextHolder.setContext(context);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+            var user = userRepository.findByEmail(dto.getEmail());
+            return jwtService.generateToken(user);
         } catch (InternalAuthenticationServiceException e) {
             throw new InvalidCredentialsException("User doesn't exist.");
         } catch (BadCredentialsException e) {

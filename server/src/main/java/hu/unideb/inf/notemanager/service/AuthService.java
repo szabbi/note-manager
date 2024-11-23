@@ -5,5 +5,5 @@ import hu.unideb.inf.notemanager.dto.RegistrationDto;
 
 public interface AuthService {
     void registration(RegistrationDto dto);
-    void login(LoginDto dto);
+    String login(LoginDto dto);
 }

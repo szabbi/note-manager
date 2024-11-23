@@ -32,10 +32,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto) {
         try {
-            authService.login(loginDto);
-            return ResponseEntity.ok("Login successful.");
+            String token = authService.login(loginDto);
+            return ResponseEntity.ok(token);
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
