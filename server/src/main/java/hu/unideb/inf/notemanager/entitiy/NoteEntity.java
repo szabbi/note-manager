@@ -17,17 +17,17 @@ public class NoteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "note_title")
+    @Column(name = "note_title", nullable = false)
     @NotBlank(message = "Title can't be empty")
     @Size(min = 5, max = 50, message = "Title must be between 5 and 50 characters")
     private String title;
 
-    @Column(name = "note_content")
+    @Column(name = "note_content", nullable = false)
     @NotBlank(message = "Content can't be empty")
     @Size(min = 5, max = 500, message = "Content must be between 5 and 500 characters")
     private String content;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne

@@ -17,13 +17,13 @@ public class UserEntity implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false)
     private String name;
 
-    @Column(name = "user_email", unique = true)
+    @Column(name = "user_email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "user_password")
+    @Column(name = "user_password", nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "felhasznalo", fetch = FetchType.EAGER)

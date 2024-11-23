@@ -2,6 +2,7 @@ package hu.unideb.inf.notemanager.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
@@ -18,6 +19,8 @@ public class RegistrationDto {
 
     @NotBlank(message = "Password can't be empty")
     @Size(min = 5, max = 30, message = "Password must be between 5 and 30 characters")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must be at least 8 characters long and contain an uppercase letter, a lowercase letter, a number, and a special character.")
     private String password;
 
     public RegistrationDto() {

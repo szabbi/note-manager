@@ -9,6 +9,7 @@ import hu.unideb.inf.notemanager.mapper.UserEntityMapper;
 import hu.unideb.inf.notemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,16 +35,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registration(RegistrationDto dto) {
-        try {
-            if (userRepository.existsByEmail(dto.getEmail())) {
-                throw new UserAlreadyExistsException("A user already exists with this email.");
-            }
-            UserEntity entity = userEntityMapper.toEntityReg(dto);
-            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-            userRepository.save(entity);
-        } catch (Exception e){
-            throw new RuntimeException("An error occurred: " + e);
-        };
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new UserAlreadyExistsException("User already exists.");
+        }
+        UserEntity entity = userEntityMapper.toEntityReg(dto);
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        userRepository.save(entity);
     }
 
     @Override
@@ -59,7 +56,9 @@ public class AuthServiceImpl implements AuthService {
             context.setAuthentication(auth);
             SecurityContextHolder.setContext(context);
         } catch (InternalAuthenticationServiceException e) {
-            throw new InvalidCredentialsException("Invalid username or password");
+            throw new InvalidCredentialsException("User doesn't exist.");
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Wrong password.");
         }
 
     }
