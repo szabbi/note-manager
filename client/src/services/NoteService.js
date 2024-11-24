@@ -5,21 +5,26 @@ const apiNote = axios.create({
 	headers: {
 		"Content-Type": "application/json",
 		withCredentials: true,
+		Authorization: `Bearer ${localStorage.getItem("token")}`,
 	},
 });
 
-export const add = (user) => {
-	return apiNote.post("/add", user);
+export const createNote = (note) => {
+	return apiNote.post("/add", note);
 };
 
 export const getPublicNotes = () => {
 	return apiNote.get("/getpublicnotes");
 };
 
-export const getUserNotes = () => {
-	return apiNote.get("/getbyuser", {
-		headers: {
-			Authorization: `Bearer ${localStorage.getItem("token")}`,
-		},
-	});
+export const getCurrentUserNotes = () => {
+	return apiNote.get("/getbyuser");
+};
+
+export const updateNote = (id, note) => {
+	return apiNote.put("/update");
+};
+
+export const deleteNote = (id) => {
+	return apiNote.delete(`/delete?id=${id}`);
 };

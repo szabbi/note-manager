@@ -53,7 +53,9 @@ public class SecurityConfig{
                         .logoutUrl("/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
-                        }))
+                        })
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(ALWAYS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

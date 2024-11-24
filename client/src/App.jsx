@@ -8,6 +8,8 @@ import Notes from "./pages/Notes";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import PublicRoutes from "./utils/PublicRoutes";
 import { AuthProvider } from "./components/AuthProvider";
+import AddNoteComponent from "./components/AddNoteComponent";
+import PublicNotes from "./pages/PublicNotes";
 
 function App() {
 	return (
@@ -22,8 +24,11 @@ function App() {
 						</Route>
 
 						<Route element={<ProtectedRoutes />}>
-							<Route path="/notes" element={<Notes />}></Route>
+							<Route path="/personal-notes" element={<Notes />}></Route>
+							<Route path="/public-notes" element={<PublicNotes />}></Route>
+							<Route path="/add-note" element={<AddNoteComponent />}></Route>
 						</Route>
+						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>
 				</AuthProvider>
 			</BrowserRouter>

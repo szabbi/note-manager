@@ -5,7 +5,7 @@ import { AuthContext } from "../components/AuthProvider";
 const PublicRoutes = () => {
 	const { isAuthenticated } = useContext(AuthContext);
 
-	return isAuthenticated ? <Navigate to="/notes" replace /> : <Outlet />;
+	return isAuthenticated ? <Navigate to="/personal-notes" replace /> : <Outlet />;
 };
 
 export default PublicRoutes;

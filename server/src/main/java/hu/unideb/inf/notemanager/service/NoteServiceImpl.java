@@ -35,7 +35,6 @@ public class NoteServiceImpl implements NoteService {
 
         String user =  SecurityContextHolder.getContext().getAuthentication().getName();
 
-        System.out.println(noteEntity.getPublicNote() + " after mapping");
         noteEntity.setFelhasznalo(userRepository.findByEmail(user));
         noteEntity.setCreatedAt(LocalDateTime.now());
         noteEntity = noteRepository.save(noteEntity);
