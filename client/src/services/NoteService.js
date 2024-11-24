@@ -21,8 +21,8 @@ export const getCurrentUserNotes = () => {
 	return apiNote.get("/getbyuser");
 };
 
-export const updateNote = (id, note) => {
-	return apiNote.put("/update");
+export const updateNote = (note) => {
+	return apiNote.put("/update", note);
 };
 
 export const deleteNote = (id) => {

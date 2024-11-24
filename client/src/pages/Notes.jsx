@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 const Notes = () => {
 	const [notes, setNotes] = useState([]);
+	const [editingNote, setEditingNote] = useState(null);
+	const [editingNoteId, setEditingNoteId] = useState("");
+	const [updatedTitle, setUpdatedTitle] = useState("");
+	const [updatedContent, setUpdatedContent] = useState("");
+	const [updatedPublicNote, setUpdatedPublicNote] = useState("");
 	const navigator = useNavigate();
 
 	useEffect(() => {
@@ -27,10 +32,32 @@ const Notes = () => {
 		navigator("/add-note");
 	}
 
-	const handleUpdateNote = (id) => {};
+	const handleUpdateNote = (note) => {
+		setEditingNote(note);
+		setEditingNoteId(note.id);
+		setUpdatedTitle(note.title);
+		setUpdatedContent(note.content);
+		setUpdatedPublicNote(note.publicNote);
+		console.log(note);
+	};
 
 	const handleDeleteNote = async (id) => {
 		await deleteNote(id);
+		handleGetNotes();
+	};
+
+	const handleSubmitUpdate = async (e) => {
+		e.preventDefault();
+		const updatedNote = {
+			id: editingNoteId,
+			title: updatedTitle,
+			content: updatedContent,
+			publicNote: updatedPublicNote,
+		};
+		console.log(updatedNote);
+
+		await updateNote(updatedNote);
+		setEditingNote(null);
 		handleGetNotes();
 	};
 
@@ -55,7 +82,7 @@ const Notes = () => {
 									<div className="d-flex justify-content-between align-items-start">
 										<div className="d-flex justify-content-between">
 											<div className="d-flex flex-column">
-												<button className="btn btn-primary btn-sm m-1" onClick={() => handleUpdateNote(note.id)}>
+												<button className="btn btn-primary btn-sm m-1" onClick={() => handleUpdateNote(note)}>
 													<i className="bi bi-pencil"></i>
 												</button>
 												<button className="btn btn-danger btn-sm m-1" onClick={() => handleDeleteNote(note.id)}>
@@ -88,6 +115,82 @@ const Notes = () => {
 				</div>
 			)}
 			<ToastContainer />
+			{editingNote && (
+				<>
+					<div className="modal-backdrop fade show" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}></div>
+					<div
+						className="modal fade show"
+						tabIndex="-1"
+						aria-labelledby="editNoteModalLabel"
+						aria-hidden="true"
+						style={{ display: "block" }}>
+						<div className="modal-dialog modal-dialog-centered">
+							<div className="modal-content">
+								<div className="modal-header">
+									<h5 className="modal-title" id="editNoteModalLabel">
+										Edit Note
+									</h5>
+									<button
+										type="button"
+										className="btn-close"
+										data-bs-dismiss="modal"
+										aria-label="Close"
+										onClick={() => setEditingNote(null)}></button>
+								</div>
+								<div className="modal-body">
+									<form onSubmit={handleSubmitUpdate}>
+										<div className="mb-3">
+											<label htmlFor="noteTitle" className="form-label">
+												Title
+											</label>
+											<input
+												type="text"
+												className="form-control"
+												id="noteTitle"
+												value={updatedTitle}
+												onChange={(e) => setUpdatedTitle(e.target.value)}
+											/>
+										</div>
+										<div className="mb-3">
+											<label htmlFor="noteContent" className="form-label">
+												Content
+											</label>
+											<textarea
+												className="form-control"
+												id="noteContent"
+												value={updatedContent}
+												onChange={(e) => setUpdatedContent(e.target.value)}
+											/>
+										</div>
+										<div className="form-check mb-3">
+											<input
+												type="checkbox"
+												id="isPublic"
+												className="form-check-input"
+												checked={updatedPublicNote}
+												onChange={(e) => setUpdatedPublicNote(e.target.checked)}
+											/>
+											<label htmlFor="isPublic" className="form-check-label">
+												Public Note
+											</label>
+										</div>
+										<button type="submit" className="btn btn-success">
+											Update Note
+										</button>
+										<button
+											type="button"
+											className="btn btn-secondary"
+											onClick={() => setEditingNote(null)} // Close the edit form without saving
+										>
+											Cancel
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };
