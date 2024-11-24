@@ -1,28 +1,21 @@
 import axios from "axios";
 
-const api = axios.create({
-	baseURL: "http://localhost:8080/api/user",
+const apiUser = axios.create({
+	baseURL: "http://localhost:8080",
 	headers: {
 		"Content-Type": "application/json",
+		withCredentials: true,
 	},
 });
 
-export const addUser = (user) => {
-	return api.post("/add", user);
+export const register = (user) => {
+	return apiUser.post("/auth/registration", user);
 };
 
-export const getAllUser = () => {
-	return api.get("/getall");
+export const login = (user) => {
+	return apiUser.post("/auth/login", user);
 };
 
-export const getUserById = (id) => {
-	api.get("/getbyid?id=${id}");
-};
-
-export const updateUser = (user) => {
-	api.put("/update", user);
-};
-
-export const deleteUser = (id) => {
-	api.delete("/delete?id=${id}", user);
+export const logout = () => {
+	return apiUser.post("/logout");
 };

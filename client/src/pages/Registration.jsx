@@ -1,41 +1,36 @@
 import React, { useRef, useState } from "react";
-import { addUser } from "../services/UserService";
+import { register } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
-const UserComponent = () => {
+const Registration = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const navigator = useNavigate();
-	const formRef = useRef(null);
 
-	function saveUser(e) {
+	function registerUser(e) {
 		e.preventDefault();
 		const user = { name, email, password };
-		const form = formRef.current;
 
-		if (form.checkValidity() == false) {
-			form.classList.add("was-validated");
-		} else {
-			alert("Form submitted successfully!");
-			addUser(user).then((response) => {
+		register(user)
+			.then((response) => {
+				toast.success("Registration successful!");
 				console.log(response.data);
-				navigator("/users");
+				navigator("/");
+			})
+			.catch((error) => {
+				toast.error(error.response.data);
 			});
-		}
 	}
 
 	return (
 		<div className="container mt-5">
 			<div className="row">
 				<div className="card col-md-6 offset-md-3">
-					<h2 className="text-center">Add User</h2>
+					<h2 className="text-center">Registration</h2>
 					<div className="card-body">
-						<form
-							className="row g-2 needs-validation"
-							noValidate
-							ref={formRef}
-						>
+						<form className="row g-2">
 							<div className="form-group mb-2">
 								<label className="form-label">Name</label>
 								<input
@@ -47,9 +42,6 @@ const UserComponent = () => {
 									onChange={(e) => setName(e.target.value)}
 									required
 								/>
-								<div className="invalid-feedback">
-									Please enter your name!
-								</div>
 							</div>
 							<div className="form-group mb-2">
 								<label className="form-label">Email</label>
@@ -62,9 +54,6 @@ const UserComponent = () => {
 									onChange={(e) => setEmail(e.target.value)}
 									required
 								/>
-								<div className="invalid-feedback">
-									Please enter a valid email address.
-								</div>
 							</div>
 							<div className="form-group mb-2">
 								<label className="form-label">Password</label>
@@ -74,28 +63,20 @@ const UserComponent = () => {
 									name="password"
 									value={password}
 									className="form-control"
-									onChange={(e) =>
-										setPassword(e.target.value)
-									}
+									onChange={(e) => setPassword(e.target.value)}
 									required
 								/>
-								<div className="invalid-feedback">
-									Please enter your password!
-								</div>
 							</div>
-							<button
-								type="submit"
-								className="btn btn-success"
-								onClick={saveUser}
-							>
+							<button type="submit" className="btn btn-success" onClick={registerUser}>
 								Submit
 							</button>
 						</form>
 					</div>
 				</div>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 };
 
-export default UserComponent;
+export default Registration;

@@ -3,6 +3,7 @@ package hu.unideb.inf.notemanager.controller;
 import hu.unideb.inf.notemanager.dto.NoteDto;
 import hu.unideb.inf.notemanager.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class NoteController {
     }
 
     @GetMapping("/getbyuser")
-    public List<NoteDto> getNotesByUser() {
-        return noteService.getNotesByUser();
+    public ResponseEntity<List<NoteDto>> getNotesByUser() {
+        return ResponseEntity.ok(noteService.getNotesByUser());
     }
 
     @GetMapping("/getpublicnotes")
