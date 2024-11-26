@@ -5,7 +5,7 @@ const apiNote = axios.create({
 	headers: {
 		"Content-Type": "application/json",
 		withCredentials: true,
-		Authorization: `Bearer ${localStorage.getItem("token")}`,
+		Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 	},
 });
 
