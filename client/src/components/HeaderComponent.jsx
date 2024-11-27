@@ -1,22 +1,19 @@
 import { React, useContext } from "react";
 import { logout } from "../services/UserService";
 import { AuthContext } from "../components/AuthProvider";
-import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const HeaderComponent = () => {
 	const { isAuthenticated, logoutUserContext } = useContext(AuthContext);
 
-	function handleLogout() {
+	const handleLogout = async () => {
 		try {
-			logout().then((respone) => {
-				logoutUserContext();
-				toast.success("Logout successful!");
-			});
+			await logout();
+			logoutUserContext();
 		} catch (error) {
-			console.error("Logout failed:", error);
+			console.log(error);
 		}
-	}
+	};
 
 	return (
 		<div>
@@ -52,7 +49,7 @@ const HeaderComponent = () => {
 									</li>
 								</ul>
 								<div className="ms-auto">
-									<button type="submit" className="btn btn-success" onClick={handleLogout}>
+									<button type="submit" className="btn btn-success" onClick={() => handleLogout()}>
 										Logout
 									</button>
 								</div>

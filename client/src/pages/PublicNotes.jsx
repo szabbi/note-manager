@@ -1,6 +1,5 @@
 import { getPublicNotes } from "../services/NoteService";
 import { useState, useEffect, React } from "react";
-import { ToastContainer, toast } from "react-toastify";
 
 const PublicNotes = () => {
 	const [notes, setNotes] = useState([]);
@@ -9,28 +8,25 @@ const PublicNotes = () => {
 		getPublicUserNotes();
 	}, []);
 
-	function getPublicUserNotes() {
-		getPublicNotes()
-			.then((response) => {
-				setNotes(response.data);
-				toast.success("Notes fetched successfully!");
-			})
-			.catch((error) => {
-				const errorMessage = error.response?.data?.message;
-				toast.error(errorMessage);
-			});
-	}
+	const getPublicUserNotes = async () => {
+		try {
+			const response = await getPublicNotes();
+			setNotes(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="container mt-5">
 			<h1 className="text-center mb-4">Public Notes</h1>
 			{notes.length === 0 ? (
-				<div className="alert alert-info text-center">No notes found. Start creating some!</div>
+				<div className="alert alert-info text-center">No public notes found.</div>
 			) : (
 				<div className="row">
 					{notes.map((note) => (
 						<div key={note.id} className="col-md-3 mb-4">
-							<div className="card">
+							<div className="card shadow">
 								<div className="card-body flex-column">
 									<h3 className="card-title text-center">{note.title}</h3>
 									<hr className="mx-1"></hr>
@@ -56,7 +52,6 @@ const PublicNotes = () => {
 					))}
 				</div>
 			)}
-			<ToastContainer />
 		</div>
 	);
 };

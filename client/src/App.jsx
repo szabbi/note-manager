@@ -4,7 +4,7 @@ import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import React from "react";
-import Notes from "./pages/Notes";
+import PersonalNotes from "./pages/PersonalNotes";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import PublicRoutes from "./utils/PublicRoutes";
 import { AuthProvider } from "./components/AuthProvider";
@@ -24,7 +24,7 @@ function App() {
 						</Route>
 
 						<Route element={<ProtectedRoutes />}>
-							<Route path="/personal-notes" element={<Notes />}></Route>
+							<Route path="/personal-notes" element={<PersonalNotes />}></Route>
 							<Route path="/public-notes" element={<PublicNotes />}></Route>
 							<Route path="/add-note" element={<AddNoteComponent />}></Route>
 						</Route>

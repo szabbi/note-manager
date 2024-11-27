@@ -8,7 +8,7 @@ const AddNoteComponent = () => {
 	const [publicNote, setPublicNote] = useState(false);
 	const navigator = useNavigate();
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const newNote = {
 			title,
@@ -16,9 +16,12 @@ const AddNoteComponent = () => {
 			publicNote,
 		};
 
-		createNote(newNote).then(() => {
-			navigator("/notes");
-		});
+		try {
+			await createNote(newNote);
+			navigator("/");
+		} catch (error) {
+			console.log(error);
+		}
 	};
 	return (
 		<div className="container mt-5">
@@ -29,7 +32,7 @@ const AddNoteComponent = () => {
 							<h4>Create a new note</h4>
 						</div>
 						<div className="card-body">
-							<form onSubmit={handleSubmit}>
+							<form onSubmit={(e) => handleSubmit(e)}>
 								<div className="mb-3">
 									<label htmlFor="title" className="form-label">
 										Title

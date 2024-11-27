@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { register } from "../services/UserService";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 
 const Registration = () => {
 	const [name, setName] = useState("");
@@ -9,20 +8,17 @@ const Registration = () => {
 	const [password, setPassword] = useState("");
 	const navigator = useNavigate();
 
-	function registerUser(e) {
+	const registerUser = async (e) => {
 		e.preventDefault();
 		const user = { name, email, password };
 
-		register(user)
-			.then((response) => {
-				toast.success("Registration successful!");
-				console.log(response.data);
-				navigator("/");
-			})
-			.catch((error) => {
-				toast.error(error.response.data);
-			});
-	}
+		try {
+			await register(user);
+			navigator("/");
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="container mt-5">
@@ -30,7 +26,7 @@ const Registration = () => {
 				<div className="card col-md-6 offset-md-3">
 					<h2 className="text-center">Registration</h2>
 					<div className="card-body">
-						<form className="row g-2">
+						<form className="row g-2" onSubmit={registerUser}>
 							<div className="form-group mb-2">
 								<label className="form-label">Name</label>
 								<input
@@ -67,14 +63,13 @@ const Registration = () => {
 									required
 								/>
 							</div>
-							<button type="submit" className="btn btn-success" onClick={registerUser}>
+							<button type="submit" className="btn btn-success">
 								Submit
 							</button>
 						</form>
 					</div>
 				</div>
 			</div>
-			<ToastContainer />
 		</div>
 	);
 };

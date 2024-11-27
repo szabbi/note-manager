@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { login } from "../services/UserService";
-import { ToastContainer, toast } from "react-toastify";
 import { AuthContext } from "../components/AuthProvider";
 
 const Login = () => {
@@ -8,19 +7,17 @@ const Login = () => {
 	const [password, setPassword] = useState("");
 	const { loginUserContext } = useContext(AuthContext);
 
-	function loginUser(e) {
+	const loginUser = async (e) => {
 		e.preventDefault();
 		const user = { email, password };
 
-		login(user)
-			.then((response) => {
-				toast.success("Login successful!");
-				loginUserContext(response.data);
-			})
-			.catch((error) => {
-				toast.error(error.response.data);
-			});
-	}
+		try {
+			const respone = await login(user);
+			loginUserContext(respone.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="container mt-5">
@@ -28,7 +25,7 @@ const Login = () => {
 				<div className="card col-md-6 offset-md-3">
 					<h2 className="text-center">Login</h2>
 					<div className="card-body">
-						<form className="row g-2">
+						<form className="row g-2" onSubmit={(e) => loginUser(e)}>
 							<div className="form-group mb-2">
 								<label className="form-label">Email</label>
 								<input
@@ -53,7 +50,7 @@ const Login = () => {
 									required
 								/>
 							</div>
-							<button type="submit" className="btn btn-success" onClick={loginUser}>
+							<button type="submit" className="btn btn-success">
 								Submit
 							</button>
 						</form>
@@ -63,7 +60,6 @@ const Login = () => {
 					</a>
 				</div>
 			</div>
-			<ToastContainer />
 		</div>
 	);
 };

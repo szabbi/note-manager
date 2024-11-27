@@ -1,9 +1,8 @@
 import { getCurrentUserNotes, updateNote, deleteNote } from "../services/NoteService";
-import { useState, useEffect, React } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { useState, useEffect, React, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Notes = () => {
+const PersonalNotes = () => {
 	const [notes, setNotes] = useState([]);
 	const [editingNote, setEditingNote] = useState(null);
 	const [editingNoteId, setEditingNoteId] = useState("");
@@ -17,15 +16,12 @@ const Notes = () => {
 	}, []);
 
 	const handleGetNotes = async () => {
-		getCurrentUserNotes()
-			.then((response) => {
-				setNotes(response.data);
-				toast.success("Notes fetched successfully!");
-			})
-			.catch((error) => {
-				const errorMessage = error.response?.data?.message;
-				toast.error(errorMessage);
-			});
+		try {
+			const respone = await getCurrentUserNotes();
+			setNotes(respone.data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	function handleAddNote() {
@@ -38,12 +34,11 @@ const Notes = () => {
 		setUpdatedTitle(note.title);
 		setUpdatedContent(note.content);
 		setUpdatedPublicNote(note.publicNote);
-		console.log(note);
 	};
 
 	const handleDeleteNote = async (id) => {
 		await deleteNote(id);
-		handleGetNotes();
+		await handleGetNotes();
 	};
 
 	const handleSubmitUpdate = async (e) => {
@@ -54,16 +49,15 @@ const Notes = () => {
 			content: updatedContent,
 			publicNote: updatedPublicNote,
 		};
-		console.log(updatedNote);
 
 		await updateNote(updatedNote);
 		setEditingNote(null);
-		handleGetNotes();
+		await handleGetNotes();
 	};
 
 	return (
 		<div className="container mt-5">
-			<button type="button" className="btn btn-success" onClick={() => handleAddNote()}>
+			<button type="button" className="btn btn-success" onClick={(e) => handleAddNote(e)}>
 				Add note
 			</button>
 			<h1 className="text-center mb-4">Your Notes</h1>
@@ -73,7 +67,7 @@ const Notes = () => {
 				<div className="row">
 					{notes.map((note) => (
 						<div key={note.id} className="col-md-4 mb-4">
-							<div className="card">
+							<div className="card shadow">
 								<div className="card-body">
 									<h3 className="card-title text-center">{note.title}</h3>
 									<hr className="mx-1"></hr>
@@ -114,7 +108,6 @@ const Notes = () => {
 					))}
 				</div>
 			)}
-			<ToastContainer />
 			{editingNote && (
 				<>
 					<div className="modal-backdrop fade show" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}></div>
@@ -138,7 +131,7 @@ const Notes = () => {
 										onClick={() => setEditingNote(null)}></button>
 								</div>
 								<div className="modal-body">
-									<form onSubmit={handleSubmitUpdate}>
+									<form onSubmit={(e) => handleSubmitUpdate(e)}>
 										<div className="mb-3">
 											<label htmlFor="noteTitle" className="form-label">
 												Title
@@ -195,4 +188,4 @@ const Notes = () => {
 	);
 };
 
-export default Notes;
+export default PersonalNotes;
