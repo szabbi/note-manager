@@ -19,3 +19,11 @@ export const login = (user) => {
 export const logout = () => {
 	return apiUser.post("/logout");
 };
+
+export const getUser = () => {
+	return apiUser.get("/auth/getUser", {
+		headers: {
+			Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+		},
+	});
+};

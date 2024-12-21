@@ -31,7 +31,7 @@ const Registration = () => {
 								<label className="form-label">Name</label>
 								<input
 									type="text"
-									placeholder="Enter first name"
+									placeholder="Enter name"
 									name="name"
 									value={name}
 									className="form-control"

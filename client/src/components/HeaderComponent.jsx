@@ -1,10 +1,11 @@
-import { React, useContext } from "react";
-import { logout } from "../services/UserService";
+import { React, useContext, useState, useEffect } from "react";
+import { logout, getUser } from "../services/UserService";
 import { AuthContext } from "../components/AuthProvider";
 import { Link } from "react-router-dom";
 
 const HeaderComponent = () => {
 	const { isAuthenticated, logoutUserContext } = useContext(AuthContext);
+	const [name, setName] = useState("");
 
 	const handleLogout = async () => {
 		try {
@@ -15,14 +16,29 @@ const HeaderComponent = () => {
 		}
 	};
 
+	useEffect(() => {
+		const fetchUsername = async () => {
+			try {
+				const response = await getUser();
+				console.log(response.data);
+
+				setName(response.data);
+				console.log("asd:", { name });
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		fetchUsername();
+	}, []);
+
 	return (
-		<div>
-			<header>
-				<nav className="navbar navbar-dark navbar-expand-lg bg-secondary">
-					<a className="navbar-brand m-1" href="#">
+		<header className="bg-primary sticky-top">
+			<div className="container-fluid">
+				<nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+					<a className="navbar-brand fw-bold" href="#">
 						Note Manager
 					</a>
-
 					{isAuthenticated && (
 						<>
 							<button
@@ -36,7 +52,7 @@ const HeaderComponent = () => {
 								<span className="navbar-toggler-icon"></span>
 							</button>
 							<div className="collapse navbar-collapse" id="navbarNav">
-								<ul className="navbar-nav mr-auto">
+								<ul className="navbar-nav me-auto mb-2 mb-lg-0">
 									<li className="nav-item">
 										<Link className="nav-link" to={"/personal-notes"}>
 											Personal Notes
@@ -48,8 +64,9 @@ const HeaderComponent = () => {
 										</Link>
 									</li>
 								</ul>
-								<div className="ms-auto">
-									<button type="submit" className="btn btn-success" onClick={() => handleLogout()}>
+								<div className="d-flex flex-column align-items-end">
+									<p className="text-primary mb-0">{name}</p>
+									<button type="submit" className="btn btn-danger fw-bold mt-0" onClick={() => handleLogout()}>
 										Logout
 									</button>
 								</div>
@@ -57,8 +74,8 @@ const HeaderComponent = () => {
 						</>
 					)}
 				</nav>
-			</header>
-		</div>
+			</div>
+		</header>
 	);
 };
 

@@ -5,6 +5,7 @@ import hu.unideb.inf.notemanager.dto.RegistrationDto;
 import hu.unideb.inf.notemanager.exception.InvalidCredentialsException;
 import hu.unideb.inf.notemanager.exception.UserAlreadyExistsException;
 import hu.unideb.inf.notemanager.service.AuthService;
+import hu.unideb.inf.notemanager.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@Valid @RequestBody RegistrationDto registrationDto) {
@@ -39,5 +43,10 @@ public class AuthController {
         } catch (InvalidCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/getUser")
+    public String getUser() {
+        return userService.getCurrentUsername();
     }
 }

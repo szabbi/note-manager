@@ -72,9 +72,9 @@ const AddNoteComponent = () => {
 										Public Note
 									</label>
 								</div>
-								<div className="d-grid">
+								<div className="d-flex justify-content-center">
 									<button type="submit" className="btn btn-success">
-										Create
+										Create note
 									</button>
 								</div>
 							</form>

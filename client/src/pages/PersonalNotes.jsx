@@ -57,17 +57,19 @@ const PersonalNotes = () => {
 
 	return (
 		<div className="container mt-5">
-			<button type="button" className="btn btn-success" onClick={(e) => handleAddNote(e)}>
-				Add note
-			</button>
-			<h1 className="text-center mb-4">Your Notes</h1>
+			<div className="d-flex align-items-center justify-content-center position-relative mb-4">
+				<button type="button" className="btn btn-success position-absolute start-0" onClick={(e) => handleAddNote(e)}>
+					Add note
+				</button>
+				<h1 className=" m-0">Your Notes</h1>
+			</div>
 			{notes.length === 0 ? (
 				<div className="alert alert-info text-center">No notes found. Start creating some!</div>
 			) : (
 				<div className="row">
 					{notes.map((note) => (
 						<div key={note.id} className="col-md-4 mb-4">
-							<div className="card shadow">
+							<div className="card shadow-sm rounded-2">
 								<div className="card-body">
 									<h3 className="card-title text-center">{note.title}</h3>
 									<hr className="mx-1"></hr>
@@ -76,10 +78,16 @@ const PersonalNotes = () => {
 									<div className="d-flex justify-content-between align-items-start">
 										<div className="d-flex justify-content-between">
 											<div className="d-flex flex-column">
-												<button className="btn btn-primary btn-sm m-1" onClick={() => handleUpdateNote(note)}>
+												<button
+													type="button"
+													className="btn btn-primary fw-bold m-1"
+													onClick={() => handleUpdateNote(note)}>
 													<i className="bi bi-pencil"></i>
 												</button>
-												<button className="btn btn-danger btn-sm m-1" onClick={() => handleDeleteNote(note.id)}>
+												<button
+													type="button"
+													className="btn btn-danger fw-bold m-1"
+													onClick={() => handleDeleteNote(note.id)}>
 													<i className="bi bi-trash"></i>
 												</button>
 											</div>
@@ -167,16 +175,18 @@ const PersonalNotes = () => {
 												Public Note
 											</label>
 										</div>
-										<button type="submit" className="btn btn-success">
-											Update Note
-										</button>
-										<button
-											type="button"
-											className="btn btn-secondary"
-											onClick={() => setEditingNote(null)} // Close the edit form without saving
-										>
-											Cancel
-										</button>
+										<div className="d-flex justify-content-between">
+											<button type="submit" className="btn btn-success">
+												Update Note
+											</button>
+											<button
+												type="button"
+												className="btn btn-secondary"
+												onClick={() => setEditingNote(null)} // Close the edit form without saving
+											>
+												Cancel
+											</button>
+										</div>
 									</form>
 								</div>
 							</div>
